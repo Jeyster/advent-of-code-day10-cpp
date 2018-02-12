@@ -70,14 +70,14 @@ vector<int> initializeList(int listSize)
     return initList;
 }
 
-int part1Result(vector<int> initList, vector<int> const &lengthSequence)
+void knotTyingProcesses(vector<int> &initList, vector<int> const &lengthSequence, int const &numberOfProcesses)
 {
     int currentPosition(0);
     int skipSize(0);
 
-    for(int i(0); i != lengthSequence.size(); ++i)
+    for(int i(0); i != (lengthSequence.size() * numberOfProcesses); ++i)
     {
-        vector<int> currentSublist(createSublistToReverse(initList, lengthSequence[i], currentPosition));
+        vector<int> currentSublist(createSublistToReverse(initList, lengthSequence[i % lengthSequence.size()], currentPosition));
         reverse(currentSublist.begin(), currentSublist.end());
         for(int j(0); j != currentSublist.size(); ++j)
         {
@@ -93,7 +93,7 @@ int part1Result(vector<int> initList, vector<int> const &lengthSequence)
         */
         /* !!!!!!!!!!!!! */
 
-        currentPosition = (currentPosition + lengthSequence[i] + skipSize) % 256;
+        currentPosition = (currentPosition + lengthSequence[i % lengthSequence.size()] + skipSize) % 256;
         ++skipSize;
 
         /* !!! DEBUG !!! */
@@ -102,8 +102,6 @@ int part1Result(vector<int> initList, vector<int> const &lengthSequence)
         */
         /* !!!!!!!!!!!!! */
     }
-
-    return initList[0] * initList[1];
 }
 
 vector<int> createSublistToReverse(vector<int> const &initList, int const &length, int const &currentPosition)
@@ -134,5 +132,14 @@ vector<int> importInputPart2(string const &filename)
     }
 
     return input;
+}
+
+void initializeLengthSequencePart2(vector<int> &input)
+{
+    input.push_back(17);
+    input.push_back(31);
+    input.push_back(73);
+    input.push_back(47);
+    input.push_back(23);
 }
 
