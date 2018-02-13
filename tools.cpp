@@ -3,6 +3,9 @@
 #include <sstream>
 #include <iterator>
 #include <algorithm>
+#include <bitset>
+#include <cmath>
+#include <iomanip>
 
 using namespace std;
 
@@ -47,6 +50,19 @@ void displayIntVector(vector<int> const &intVector)
     cout << endl;
 }
 
+void displayIntVectorOfVector(vector<vector<int> > const &intVector)
+{
+    for(int i(0); i != intVector.size(); ++i)
+    {
+        for(int j(0); j != intVector[i].size(); ++j)
+        {
+            cout << intVector[i][j];
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
 vector<int> stringVectorConvertedToIntVector(vector<string> const &stringVector)
 {
     vector<int> intVector;
@@ -85,21 +101,18 @@ void knotTyingProcesses(vector<int> &initList, vector<int> const &lengthSequence
         }
 
         /* !!! DEBUG !!! */
-        /*
+        cout << "Iteration numero " << i << endl;
         cout << "Current sublist : " << endl;
         displayIntVector(currentSublist);
         cout << "Current list : " << endl;
         displayIntVector(initList);
-        */
         /* !!!!!!!!!!!!! */
 
         currentPosition = (currentPosition + lengthSequence[i % lengthSequence.size()] + skipSize) % 256;
         ++skipSize;
 
         /* !!! DEBUG !!! */
-        /*
-        cout << "Length : " << lengthSequence[i] << " , position : " << currentPosition << " , skip : " << skipSize << endl;
-        */
+        cout << "Length : " << lengthSequence[i % lengthSequence.size()] << " , position : " << currentPosition << " , skip : " << skipSize << endl;
         /* !!!!!!!!!!!!! */
     }
 }
@@ -142,4 +155,97 @@ void initializeLengthSequencePart2(vector<int> &input)
     input.push_back(47);
     input.push_back(23);
 }
+
+vector<int> createDenseHashXOR(vector<int> numbers)
+{
+    vector<int> denseHash;
+    for(int i(0); i != numbers.size()/16; ++i)
+    {
+        int denseInt(numbers[i*16]);
+        for(int j(1); j != numbers.size()/16; ++j)
+        {
+            denseInt = denseInt ^ numbers[j];
+        }
+        denseHash.push_back(denseInt);
+    }
+    return denseHash;
+}
+
+void displayHashCode(vector<int> numbers)
+{
+    for(int i(0); i != numbers.size(); ++i)
+    {
+        cout << setbase(16);
+        cout << numbers[i];
+    }
+    cout << endl;
+}
+
+/*
+vector<string> convertIntArrayIntoBinaryStringArray(vector<int> intVector)
+{
+    vector<string> binaryStrVector;
+    for(int i(0); i != intVector.size(); ++i)
+    {
+        binaryStrVector.push_back(bitset<8>(intVector[i]).to_string());
+    }
+    return binaryStrVector;
+}
+
+vector<vector<int> > changeStringToInt(vector<string> input)
+{
+    vector<vector<int> > inputNumbers;
+
+    for(int i(0); i != input.size(); ++i)
+    {
+        istringstream stream(input[i]);
+        char a;
+        vector<int> number;
+        while(stream.get(a))
+        {
+            number.push_back(atoi(&a));
+        }
+        inputNumbers.push_back(number);
+    }
+
+    return inputNumbers;
+}
+
+vector<string> changeIntToString(vector<vector<int> > binaryIntegers)
+{
+    vector<string> binaries;
+    for(int i(0); i != binaryIntegers.size(); ++i)
+    {
+        vector<int> currentBinaryInteger(binaryIntegers[i]);
+        string currentStr("");
+        ostringstream oss;
+        for(int j(0); j != currentBinaryInteger.size(); ++j)
+        {
+            oss << currentBinaryInteger[j];
+        }
+        currentStr = oss.str();
+        binaries.push_back(currentStr);
+    }
+    return binaries;
+}
+
+vector<vector<int> > createDenseHashXOR(vector<vector<int> > binaryIntegers)
+{
+    vector<vector<int> > denseHash;
+    for(int i(0); i != binaryIntegers.size()/16; ++i)
+    {
+        vector<int> denseBinary(binaryIntegers[i*16]);
+        for(int j(1); j != binaryIntegers.size()/16; ++j)
+        {
+            for(int k(0); k != binaryIntegers[i*16+j].size(); ++k)
+            {
+                denseBinary[k] = denseBinary[k] ^ binaryIntegers[i*16+j][k];
+            }
+        }
+        denseHash.push_back(denseBinary);
+    }
+    return denseHash;
+}
+*/
+
 
